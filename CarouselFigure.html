@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		ul{
+			text-decoration: none;
+			list-style: none;
+		}
+		#carousel_show{
+			position: relative;
+			height: 200px;
+			width: 800px;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+		#carousel{
+			position: absolute;
+			height: 200px;
+		}
+		#carousel .box1{
+			float: left;
+			width: 200px;
+			height: 200px;
+			background-color: red;
+		}
+		#carousel .box2{
+			float: left;
+			width: 200px;
+			height: 200px;
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div id='carousel_show'>
+		<ul id="carousel" style="left:0; " Animation='true'>
+			<li class="box1">1</li>
+			<li class="box2">2</li>
+			<li class="box1">3</li>
+			<li class="box2">4</li>
+			<li class="box1">5</li>
+			<li class="box2">6</li>
+			<li class="box1">7</li>
+			<li class="box2">8</li>
+
+		</ul>
+	</div>
+	<button id='carousel_back'>last</button>
+	<button id='carousel_go'>next</button>
+	<script type="text/javascript" src="js/CarouselFigure.js"></script>
+</body>
+</html>
