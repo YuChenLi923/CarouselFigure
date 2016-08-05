@@ -11,10 +11,10 @@
 			text-decoration: none;
 			list-style: none;
 		}
-		#carousel_show{
+		#carousel_show{ /*设置轮播区域的宽度，从而确定能显示的box数量*/
 			position: relative;
 			height: 200px;
-			width: 800px;
+			width: 600px;
 			margin: 0 auto;
 			overflow: hidden;
 		}
@@ -22,7 +22,7 @@
 			position: absolute;
 			height: 200px;
 		}
-		#carousel .box1{
+		#carousel .box1{ /*在这里设置每个box的宽度*/
 			float: left;
 			width: 200px;
 			height: 200px;
@@ -38,7 +38,8 @@
 </head>
 <body>
 	<div id='carousel_show'>
-		<ul id="carousel" style="left:0; " Animation='true'>
+		<ul id="carousel" style="left:0; " Animation='true' AutoTime=1>
+		<!-- 要实现循环轮播的效果，这里的li的数量=非重复li的总数+轮播区域能展示的数量+1，详情见下面 -->
 			<li class="box1">1</li>
 			<li class="box2">2</li>
 			<li class="box1">3</li>
@@ -47,7 +48,10 @@
 			<li class="box2">6</li>
 			<li class="box1">7</li>
 			<li class="box2">8</li>
-
+			<li class="box1">1</li>
+			<li class="box2">2</li>
+			<li class="box1">3</li>
+			<li class="box2">4</li>
 		</ul>
 	</div>
 	<button id='carousel_back'>last</button>
