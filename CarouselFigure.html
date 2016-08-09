@@ -14,7 +14,7 @@
 		#carousel_show{ /*设置轮播区域的宽度，从而确定能显示的box数量*/
 			position: relative;
 			height: 200px;
-			width: 600px;
+			width: 200px;
 			margin: 0 auto;
 			overflow: hidden;
 		}
@@ -34,25 +34,44 @@
 			height: 200px;
 			background-color: blue;
 		}
+		#carousel_buttons{
+			position: absolute;
+		 	height: 10px;
+			 width: 100px; 
+			 z-index: 2;
+			  bottom: 20px; 
+			  left: 100px;}
+        #carousel_buttons span{ 
+        	cursor: pointer;
+        	float: left; 
+        	border: 1px solid #fff;
+        	width: 10px;
+        	height: 10px;
+        	border-radius: 50%;
+        	background: #333; 
+        	margin-right: 5px;}
+        #carousel_buttons .on {  background: orangered;}
 	</style>
 </head>
 <body>
 	<div id='carousel_show'>
-		<ul id="carousel" style="left:0; " Animation='true' AutoTime=1>
+		<ul id="carousel" style="left:0; " Animation='true' AutoTime=2>
 		<!-- 要实现循环轮播的效果，这里的li的数量=非重复li的总数+轮播区域能展示的数量+1，详情见下面 -->
 			<li class="box1">1</li>
 			<li class="box2">2</li>
 			<li class="box1">3</li>
 			<li class="box2">4</li>
 			<li class="box1">5</li>
-			<li class="box2">6</li>
-			<li class="box1">7</li>
-			<li class="box2">8</li>
 			<li class="box1">1</li>
 			<li class="box2">2</li>
-			<li class="box1">3</li>
-			<li class="box2">4</li>
 		</ul>
+		 <div id="carousel_buttons" style="">
+	        <span index="1"></span>
+	        <span index="2"></span>
+	        <span index="3"></span>
+	        <span index="4"></span>
+	        <span index="5"></span>
+   		 </div>
 	</div>
 	<button id='carousel_back'>last</button>
 	<button id='carousel_go'>next</button>
