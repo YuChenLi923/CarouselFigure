@@ -65,16 +65,21 @@ function addCarousel(id,time,index,inteval,indexButton){//id-轮播图的滚动�
 				}
 			},Time*1000);
 	}
+
 	if(indexButton==true&&showNum==1){
 		button.onclick=function(event){
-			var event=event?event:window.event;
-			var target=event.target;
-			var toIndex=target.getAttribute("index");
-			if(toIndex!=index){
-				dis=(toIndex-index)*boxW;
-				index=toIndex;
-				addButtonOn(buttons,index);
-				carouselAnimation.call(carousel,-1*dis,time,inteval);
+			if(Carousel.getAttribute("Animation")=='true'){
+				var event=event?event:window.event;
+				var target=event.target;
+				console.log(target);
+				var toIndex=target.getAttribute("index");
+				if(toIndex!=index&&toIndex){
+						dis=(toIndex-index)*boxW;
+						Carousel.style.left=-1*boxW*(index-1);
+						index=toIndex;
+						addButtonOn(buttons,index);
+						carouselAnimation.call(carousel,-1*dis,time,inteval);
+				}
 			}
 		};
 	}	
