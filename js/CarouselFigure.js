@@ -1,126 +1,127 @@
-// 创建一个轮播图对象的实例
-var carousel=new addCarousel('carousel',0.5,4,10,true);
-function addCarousel(id,time,index,inteval,indexButton){//id-轮播图的滚动块的ID，time-轮播图每次滚动的时间，index-轮播图中出现在显示区域最右边块的索引号，inteval-流畅度,indexButton当轮播图只显示一个BOX的时候为ture才开启下标按钮
-	var index=index;
-	this.carousel=document.getElementById(id);
-	this.boxW=this.carousel.getElementsByTagName('li')[0].offsetWidth;
-	this.num=this.carousel.getElementsByTagName('li').length;
-	this.showNum=(document.getElementById(id+'_show').offsetWidth)/this.boxW;
-	this.time=time;
-	this.carousel.style.width=this.num*this.boxW+'px';
-	this.carousel.style.left=-(index-1)*this.boxW+'px';
-	var go=document.getElementById(id+'_go');
-	var back=document.getElementById(id+'_back');
-	var Carousel=this.carousel;
-	var boxW=this.boxW;
-	var tureNum=this.num-this.showNum-1;
-	var button=document.getElementById(id+'_buttons');
-	var showNum=this.showNum;
-	if(indexButton==true&&showNum==1){
-		var buttons=button.getElementsByTagName('span');
-		buttons[index-1].className='on';
-	}
-	else{
-		button.style.cssText='display:none';
-	}
-	back.onclick=function(){
-		if(Carousel.getAttribute("Animation")=='true'){
-			if(indexButton==true&&showNum==1){
-				--index;
-				if(index<1){
-					index=tureNum;
-				}
-				addButtonOn(buttons,index);
-			}
-			dis=boxW;
-			carouselAnimation.call(carousel,dis,time,inteval);
-		}	
-	};
-	go.onclick=function(){
-		if(Carousel.getAttribute("Animation")=='true'){
-			if(indexButton==true&&showNum==1){
-				++index;
-				if(index>tureNum){
-					index=1;
-				}
-				addButtonOn(buttons,index);
-			}
-			dis=-boxW;
-			carouselAnimation.call(carousel,dis,time,inteval);
+//轮播图 0.4 by chen
+createCarousel();//开启轮播图模块
+function createCarousel(){
+	var carousel=new addCarousel(// 创建一个轮播图对象的实例 
+		{ 
+			ID:'carousel',//id-轮播图的滚动块的ID
+			time:0.5,//time-轮播图每次滚动的时间
+			index:4,//index-轮播图中出现在显示区域最右边块的索引号
+			inteval:10,//inteval-流畅度
+			indexButton:true//indexButton当轮播图只显示一个BOX的时候为ture才开启下标按钮
 		}
-	};
-	if(this.carousel.getAttribute("AutoTime")!=0){
-			var Time=this.carousel.getAttribute("AutoTime");
-			dis=-boxW;
-			setInterval(function(){
-				if(Carousel.getAttribute("Animation")=='true'){
-					if(indexButton==true&&showNum==1){
-						++index;
-						if(index>tureNum){
-						index=1;
-						}
-						addButtonOn(buttons,index);
-					}
-					carouselAnimation.call(carousel,dis,time,inteval);
-				}
-			},Time*1000);
-	}
-
-	if(indexButton==true&&showNum==1){
-		button.onclick=function(event){
-			if(Carousel.getAttribute("Animation")=='true'){
-				var event=event?event:window.event;
-				var target=event.target;
-				console.log(target);
-				var toIndex=target.getAttribute("index");
-				if(toIndex!=index&&toIndex){
-						dis=(toIndex-index)*boxW;
-						Carousel.style.left=-1*boxW*(index-1);
-						index=toIndex;
-						addButtonOn(buttons,index);
-						carouselAnimation.call(carousel,-1*dis,time,inteval);
-				}
-			}
+	);
+	function addCarousel(carousel){
+		var Carousel=carousel;
+		var dis;
+		Carousel.elem=document.getElementById(carousel.ID);
+		Carousel.boxW=carousel.elem.getElementsByTagName('li')[0].offsetWidth;
+		Carousel.num=carousel.elem.getElementsByTagName('li').length;
+		Carousel.showNum=(document.getElementById(carousel.ID+'_show').offsetWidth)/carousel.boxW;
+		Carousel.go=document.getElementById(carousel.ID+'_go');
+		Carousel.back=document.getElementById(carousel.ID+'_back');
+		Carousel.tureNum=Carousel.num-Carousel.showNum-1;
+		Carousel.button=document.getElementById(carousel.ID+'_buttons')	
+		Carousel.elem.style.width=Carousel.num*Carousel.boxW+'px';
+		Carousel.elem.style.left=-(Carousel.index-1)*Carousel.boxW+'px';
+		if(Carousel.indexButton==true&&Carousel.showNum==1){
+			var buttons=Carousel.button.getElementsByTagName('span');
+			buttons[Carousel.index-1].className='on';
+		}
+		else{
+			Carousel.button.style.cssText='display:none';
+		}
+		Carousel.back.onclick=function(){
+			clickEvent.call(Carousel,-1,buttons);
 		};
-	}	
-}
-function carouselAnimation(dis,time,inteval){
-	var carousel=this.carousel;
-	carousel.setAttribute("Animation",'false');
-	var speed=dis/(time*1000/inteval);
-	var left=parseInt(carousel.style.left);
-	var newpos=parseInt(carousel.style.left)+dis;	
-	if(newpos>0&&dis>0){
-		carousel.style.left=((this.num-(this.showNum+1))*this.boxW*-1)+'px';
-		newpos=parseInt(carousel.style.left)+dis;
-		left=parseInt(carousel.style.left);
-	}
-	if(newpos<(this.boxW*(this.num-this.showNum+1)*(-1)+1)&&dis<0){
-		carousel.style.left=-1*this.boxW+'px';
-		newpos=parseInt(carousel.style.left)+dis;
-		left=parseInt(carousel.style.left);
-	}
-	var go = function(){
-		if(dis>0&&parseInt(carousel.style.left)<newpos || dis<0&&parseInt(carousel.style.left)>newpos){
-			carousel.style.left=parseInt(carousel.style.left)+speed+'px';
-			setTimeout(go,inteval);
+		Carousel.go.onclick=function(){
+			clickEvent.call(Carousel,1,buttons);
+		};
+		if(Carousel.elem.getAttribute("AutoTime")!=0){
+				var Time=Carousel.elem.getAttribute("AutoTime");
+				dis=-Carousel.boxW;
+				setInterval(function(){
+					if(Carousel.elem.getAttribute("Animation")=='true'){
+						if(Carousel.indexButton==true&&Carousel.showNum==1){
+							++Carousel.index;
+							if(Carousel.index>Carousel.tureNum){
+							Carousel.index=1;
+							}
+							addButtonOn(buttons,Carousel.index);
+						}
+						carouselAnimation.call(Carousel,dis,Carousel.time,Carousel.inteval);
+					}
+				},Time*1000);
 		}
-		else{
-			carousel.style.left=left+dis+'px';
-			carousel.setAttribute("Animation",'true');
+		if(Carousel.indexButton==true&&Carousel.showNum==1){
+			Carousel.button.onclick=function(event){
+				if(Carousel.elem.getAttribute("Animation")=='true'){
+					var event=event?event:window.event;
+					var target=event.target;
+					var toIndex=target.getAttribute("index");
+					if(toIndex!=index&&toIndex){
+							dis=(toIndex-index)*Carousel.boxW;
+							Carousel.elem.style.left=-1*Carousel.boxW*(Carousel.index-1);
+							Carousel.index=toIndex;
+							addButtonOn(buttons,Carousel.index);
+							carouselAnimation.call(Carousel,-1*dis,Carousel.time,Carousel.inteval);
+					}
+				}
+			};
+		}		
+	}
+	function clickEvent(factor,buttons){
+			if(this.elem.getAttribute("Animation")=='true'){
+					if(this.indexButton==true&&this.showNum==1){
+						this.index=this.index+factor;
+						if(this.index<1){
+							this.index=this.tureNum;
+						}
+						else if(this.index>this.tureNum){
+							this.index=1;
+						}
+						addButtonOn(buttons,this.index);
+					}
+					dis=this.boxW*(-factor);
+					carouselAnimation.call(this,dis,this.time,this.inteval);
+			}	
+	}
+	function carouselAnimation(dis,time,inteval){
+		var carousel=this.elem;
+		carousel.setAttribute("Animation",'false');
+		var speed=dis/(time*1000/inteval);
+		var left=parseInt(carousel.style.left);
+		var newpos=parseInt(carousel.style.left)+dis;	
+		if(newpos>0&&dis>0){
+			carousel.style.left=((this.num-(this.showNum+1))*this.boxW*-1)+'px';
+			newpos=parseInt(carousel.style.left)+dis;
+			left=parseInt(carousel.style.left);
+		}
+		if(newpos<(this.boxW*(this.num-this.showNum+1)*(-1)+1)&&dis<0){
+			carousel.style.left=-1*this.boxW+'px';
+			newpos=parseInt(carousel.style.left)+dis;
+			left=parseInt(carousel.style.left);
+		}
+		var go = function(){
+			if(dis>0&&parseInt(carousel.style.left)<newpos || dis<0&&parseInt(carousel.style.left)>newpos){
+				carousel.style.left=parseInt(carousel.style.left)+speed+'px';
+				setTimeout(go,inteval);
+			}
+			else{
+				carousel.style.left=left+dis+'px';
+				carousel.setAttribute("Animation",'true');
+			}
+		}
+		go();	
+	}
+	function addButtonOn(buttons,index){
+		console.log(buttons);
+		for(var i=0;i<buttons.length;i++){
+			if(i==index-1){
+				buttons[i].className='on';
+			}
+			else{
+				buttons[i].className='';
+			}
 		}
 	}
-	go();	
-}
-
-function addButtonOn(buttons,index){
-	for(var i=0;i<buttons.length;i++){
-		if(i==index-1){
-			buttons[i].className='on';
-		}
-		else{
-			buttons[i].className='';
-		}
-	}
-
-}
+};
