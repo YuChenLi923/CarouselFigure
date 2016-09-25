@@ -58,8 +58,8 @@ function createCarousel(){
 					var event=event?event:window.event;
 					var target=event.target;
 					var toIndex=target.getAttribute("index");
-					if(toIndex!=index&&toIndex){
-							dis=(toIndex-index)*Carousel.boxW;
+					if(toIndex!=Carousel.index&&toIndex){
+							dis=(toIndex-Carousel.index)*Carousel.boxW;
 							Carousel.elem.style.left=-1*Carousel.boxW*(Carousel.index-1);
 							Carousel.index=toIndex;
 							addButtonOn(buttons,Carousel.index);
