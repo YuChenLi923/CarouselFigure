@@ -11,37 +11,37 @@
 			text-decoration: none;
 			list-style: none;
 		}
-		#carousel_show{ /*设置轮播区域的宽度，从而确定能显示的box数量*/
+		.carousel_show{ /*设置轮播区域的宽度，从而确定能显示的box数量*/
 			position: relative;
 			height: 200px;
 			width: 200px;
 			margin: 0 auto;
 			overflow: hidden;
 		}
-		#carousel{
+		.carousel{
 			position: absolute;
 			height: 200px;
 		}
-		#carousel .box1{ /*在这里设置每个box的宽度*/
+		.carousel .box1{ /*在这里设置每个box的宽度*/
 			float: left;
 			width: 200px;
 			height: 200px;
 			background-color: red;
 		}
-		#carousel .box2{
+		.carousel .box2{
 			float: left;
 			width: 200px;
 			height: 200px;
 			background-color: blue;
 		}
-		#carousel_buttons{
+		.carousel_buttons{
 			position: absolute;
 		 	height: 10px;
 			 width: 100px; 
 			 z-index: 2;
 			  bottom: 20px; 
 			  left: 100px;}
-        #carousel_buttons span{ 
+        .carousel_buttons span{ 
         	cursor: pointer;
         	float: left; 
         	border: 1px solid #fff;
@@ -50,22 +50,19 @@
         	border-radius: 50%;
         	background: #333; 
         	margin-right: 5px;}
-        #carousel_buttons .on {  background: orangered;}
+        .carousel_buttons .on {  background: orangered;}
 	</style>
 </head>
 <body>
-	<div id='carousel_show'>
-		<ul id="carousel" style="left:0; " Animation='true' AutoTime=0>
-		<!-- 要实现循环轮播的效果，这里的li的数量=非重复li的总数+轮播区域能展示的数量+1，详情见下面 -->
+	<div id='carousel_show' class="carousel_show">
+		<ul  class='carousel'id="carousel" style="left:0; " Animation='true' AutoTime=0>
 			<li class="box1">1</li>
 			<li class="box2">2</li>
 			<li class="box1">3</li>
 			<li class="box2">4</li>
 			<li class="box1">5</li>
-			<li class="box1">1</li>
-			<li class="box2">2</li>
 		</ul>
-		 <div id="carousel_buttons" style="">
+		 <div id="carousel_buttons" class='carousel_buttons'style="">
 	        <span index="1"></span>
 	        <span index="2"></span>
 	        <span index="3"></span>
@@ -73,8 +70,8 @@
 	        <span index="5"></span>
    		 </div>
 	</div>
-	<button id='carousel_back'>last</button>
-	<button id='carousel_go'>next</button>
+	<button id='carousel_back' class="carousel_back">last</button>
+	<button id='carousel_go' class="carousel_go">next</button>
 	<script type="text/javascript" src="js/CarouselFigure.js"></script>
 </body>
 </html>

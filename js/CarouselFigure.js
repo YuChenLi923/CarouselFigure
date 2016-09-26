@@ -1,103 +1,98 @@
-//轮播图 0.4 by chen
-createCarousel();//开启轮播图模块
-function createCarousel(){
-	var carousel=new addCarousel(// 创建一个轮播图对象的实例 
-		{ 
-			ID:'carousel',//id-轮播图的滚动块的ID
-			time:0.5,//time-轮播图每次滚动的时间
-			index:4,//index-轮播图中出现在显示区域最右边块的索引号
-			inteval:10,//inteval-流畅度
-			indexButton:true//indexButton当轮播图只显示一个BOX的时候为ture才开启下标按钮
-		}
-	);
-	function addCarousel(carousel){
-		var Carousel=carousel;
-		var dis;
-		Carousel.elem=document.getElementById(carousel.ID);
-		Carousel.boxW=carousel.elem.getElementsByTagName('li')[0].offsetWidth;
-		Carousel.num=carousel.elem.getElementsByTagName('li').length;
-		Carousel.showNum=(document.getElementById(carousel.ID+'_show').offsetWidth)/carousel.boxW;
-		Carousel.go=document.getElementById(carousel.ID+'_go');
-		Carousel.back=document.getElementById(carousel.ID+'_back');
-		Carousel.tureNum=Carousel.num-Carousel.showNum-1;
-		Carousel.button=document.getElementById(carousel.ID+'_buttons')	
-		Carousel.elem.style.width=Carousel.num*Carousel.boxW+'px';
-		Carousel.elem.style.left=-(Carousel.index-1)*Carousel.boxW+'px';
-		if(Carousel.indexButton==true&&Carousel.showNum==1){
-			var buttons=Carousel.button.getElementsByTagName('span');
-			buttons[Carousel.index-1].className='on';
+//轮播图 0.6 by chen
+function Carousel(carouselInf){
+	this.inf=carouselInf;
+}
+Carousel.prototype.createCarousel=function(carouselInf){
+	console.log(carouselInf);
+	var dis,
+		carousel=document.getElementById(carouselInf.ID),
+		boxW=carousel.getElementsByTagName('li')[0].offsetWidth,
+		showNum=(document.getElementById(carouselInf.ID+'_show').offsetWidth)/boxW,
+		tureNum=carousel.getElementsByTagName('li').length,
+		num=tureNum+showNum+1,
+		go=document.getElementById(carouselInf.ID+'_go'),
+		back=document.getElementById(carouselInf.ID+'_back'),
+		button=document.getElementById(carouselInf.ID+'_buttons'),	
+		time=carouselInf.time,
+		inteval=carouselInf.inteval,
+		index=carouselInf.index,
+		indexButton=carouselInf.indexButton;
+	carousel.style.width=num*boxW+'px';
+	carousel.style.left=-(index-1)*boxW+'px';
+	clone(showNum+1);
+		if(indexButton==true&&showNum==1){
+			var buttons=button.getElementsByTagName('span');
+			buttons[index-1].className='on';
 		}
 		else{
-			Carousel.button.style.cssText='display:none';
+			button.style.cssText='display:none';
 		}
-		Carousel.back.onclick=function(){
-			clickEvent.call(Carousel,-1,buttons);
+		back.onclick=function(){
+			clickEvent(-1);
 		};
-		Carousel.go.onclick=function(){
-			clickEvent.call(Carousel,1,buttons);
+		go.onclick=function(){
+			clickEvent(1);
 		};
-		if(Carousel.elem.getAttribute("AutoTime")!=0){
-				var Time=Carousel.elem.getAttribute("AutoTime");
-				dis=-Carousel.boxW;
+		if(carousel.getAttribute("AutoTime")!=0){
+				var Time=carousel.getAttribute("AutoTime");
+				dis=-boxW;
 				setInterval(function(){
-					if(Carousel.elem.getAttribute("Animation")=='true'){
-						if(Carousel.indexButton==true&&Carousel.showNum==1){
-							++Carousel.index;
-							if(Carousel.index>Carousel.tureNum){
-							Carousel.index=1;
+					if(carousel.getAttribute("Animation")=='true'){
+						if(indexButton==true&&showNum==1){
+							++index;
+							if(index>tureNum){
+								index=1;
 							}
-							addButtonOn(buttons,Carousel.index);
+							addButtonOn(buttons);
 						}
-						carouselAnimation.call(Carousel,dis,Carousel.time,Carousel.inteval);
+						carouselAnimation(dis);
 					}
 				},Time*1000);
 		}
-		if(Carousel.indexButton==true&&Carousel.showNum==1){
-			Carousel.button.onclick=function(event){
-				if(Carousel.elem.getAttribute("Animation")=='true'){
+		if(indexButton==true&&showNum==1){
+			button.onclick=function(event){
+				if(carousel.getAttribute("Animation")=='true'){
 					var event=event?event:window.event;
 					var target=event.target;
 					var toIndex=target.getAttribute("index");
-					if(toIndex!=Carousel.index&&toIndex){
-							dis=(toIndex-Carousel.index)*Carousel.boxW;
-							Carousel.elem.style.left=-1*Carousel.boxW*(Carousel.index-1);
+					if(toIndex!=index&&toIndex){
+							dis=(toIndex-index)*boxW;
+							carousel.style.left=-1*boxW*(index-1);
 							Carousel.index=toIndex;
-							addButtonOn(buttons,Carousel.index);
-							carouselAnimation.call(Carousel,-1*dis,Carousel.time,Carousel.inteval);
+							addButtonOn(buttons);
+							carouselAnimation(-1*dis);
 					}
 				}
 			};
-		}		
-	}
-	function clickEvent(factor,buttons){
-			if(this.elem.getAttribute("Animation")=='true'){
-					if(this.indexButton==true&&this.showNum==1){
-						this.index=this.index+factor;
-						if(this.index<1){
-							this.index=this.tureNum;
+		}			
+	function clickEvent(factor){
+			if(carousel.getAttribute("Animation")=='true'){
+					if(indexButton==true&&showNum==1){
+						index=index+factor;
+						if(index<1){
+							index=tureNum;
 						}
-						else if(this.index>this.tureNum){
-							this.index=1;
+						else if(index>tureNum){
+							index=1;
 						}
-						addButtonOn(buttons,this.index);
+						addButtonOn(buttons);
 					}
-					dis=this.boxW*(-factor);
-					carouselAnimation.call(this,dis,this.time,this.inteval);
+					dis=boxW*(-factor);
+					carouselAnimation(dis);
 			}	
 	}
-	function carouselAnimation(dis,time,inteval){
-		var carousel=this.elem;
+	function carouselAnimation(dis){
 		carousel.setAttribute("Animation",'false');
 		var speed=dis/(time*1000/inteval);
 		var left=parseInt(carousel.style.left);
 		var newpos=parseInt(carousel.style.left)+dis;	
 		if(newpos>0&&dis>0){
-			carousel.style.left=((this.num-(this.showNum+1))*this.boxW*-1)+'px';
+			carousel.style.left=((num-(showNum+1))*boxW*-1)+'px';
 			newpos=parseInt(carousel.style.left)+dis;
 			left=parseInt(carousel.style.left);
 		}
-		if(newpos<(this.boxW*(this.num-this.showNum+1)*(-1)+1)&&dis<0){
-			carousel.style.left=-1*this.boxW+'px';
+		if(newpos<(boxW*(num-showNum+1)*(-1)+1)&&dis<0){
+			carousel.style.left=-1*boxW+'px';
 			newpos=parseInt(carousel.style.left)+dis;
 			left=parseInt(carousel.style.left);
 		}
@@ -113,8 +108,7 @@ function createCarousel(){
 		}
 		go();	
 	}
-	function addButtonOn(buttons,index){
-		console.log(buttons);
+	function addButtonOn(){
 		for(var i=0;i<buttons.length;i++){
 			if(i==index-1){
 				buttons[i].className='on';
@@ -124,4 +118,22 @@ function createCarousel(){
 			}
 		}
 	}
-};
+	function clone(num){
+		for(var i=0;i<num;i++){
+			var li=document.createElement('li');
+			li.className=i%2==0?'box1':'box2';
+			li.innerHTML=i+1;
+			carousel.appendChild(li);
+		}
+	}
+}
+var carousel1=new Carousel(
+	{ 
+		ID:'carousel',//id-轮播图的滚动块的ID
+		time:0.5,//time-轮播图每次滚动的时间
+		index:4,//index-轮播图中出现在显示区域最右边块的索引号
+		inteval:10,//inteval-流畅度
+		indexButton:true//indexButton当轮播图只显示一个BOX的时候为ture才开启下标按钮
+	}
+);
+carousel1.createCarousel(carousel1.inf);
